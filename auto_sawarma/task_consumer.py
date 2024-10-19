@@ -1,0 +1,3 @@
+class TaskConsumer:
+    def consume(self, task):
+        ...
