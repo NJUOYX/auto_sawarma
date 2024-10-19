@@ -1,6 +1,6 @@
 class Monitor:
-    def __init__(self, conf, **kwargs):
-        self.conf = conf
+    def __init__(self, *args, **kwargs):
+        ...
 
     @property
     def stat_game_running(self):
@@ -9,3 +9,7 @@ class Monitor:
     @property
     def stat_game_end(self):
         return False
+
+
+class StubMonitor(Monitor):
+    ...

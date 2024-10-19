@@ -1,5 +1,5 @@
 import json
-from auto_sawarma import Bot
+from auto_shawarma import Bot
 
 
 def main():

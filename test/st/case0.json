@@ -1,0 +1,44 @@
+{
+  "bot": {
+    "monitor": "StubMonitor",
+    "consumer": "StubConsumer",
+    "producer": "StubProducer"
+  },
+  "producer": {
+    "stubs": [
+      {
+        "target_pos": [0, 0],
+        "shawarma": 2,
+        "kibbeh": 2,
+        "cola_orange": 0,
+        "cola_coke": 1,
+        "orange_juice": 2
+      },
+      {
+        "target_pos": [1, 1],
+        "shawarma": 1,
+        "kibbeh": 2,
+        "cola_orange": 1,
+        "cola_coke": 1,
+        "orange_juice": 0
+      },
+      {
+        "target_pos": [2, 2],
+        "shawarma": 2,
+        "kibbeh": 0,
+        "cola_orange": 0,
+        "cola_coke": 0,
+        "orange_juice": 2
+      },
+      {
+        "target_pos": [3, 3],
+        "shawarma": 2,
+        "kibbeh": 2,
+        "cola_orange": 1,
+        "cola_coke": 1,
+        "orange_juice": 0
+      }
+    ]
+  },
+  "consumer": {}
+}
