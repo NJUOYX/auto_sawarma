@@ -1,3 +1,4 @@
+import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
@@ -12,49 +13,105 @@ class Data(ABC):
                 raise ValueError(f"[INITIALIZATION ERROR]: {cls.__name__} with {kwargs}")
         return obj
 
-    def __init__(self, **kwargs):
-        ...
 
-
-class InteractiveData(Data, ABC):
-    @property
-    @abstractmethod
-    def interact_by_click(self) -> bool:
-        ...
+class Container(Data):
+    volume: int
+    contains: int
 
     @property
+    def empty(self):
+        return self.contains == 0
+
+    @property
+    def full(self):
+        return self.volume == self.contains
+
+    def supplied(self) -> bool:
+        if self.full:
+            return False
+        else:
+            self.contains += 1
+            return True
+
+
+class Supplier(Data, ABC):
     @abstractmethod
-    def interact_by_drag(self) -> bool:
+    def supply(self) -> bool:
         ...
 
-    @abstractmethod
-    def valid_target(self, target: Data) -> bool:
-        ...
+
+class BasicFood(Container, Supplier):
+    def supply(self) -> bool:
+        if self.empty:
+            return False
+        else:
+            self.contains -= 1
+            return True
+
+
+class Shawarma(Data):
+    limit_of_beef: int
+    limit_of_cucumber: int
+    limit_of_cream: int
+    limit_of_fries_potato: int
+    limit_of_molasses: int
+
+    def __init__(self, *, limit_of_beef, limit_of_cucumber, limit_of_cream, limit_of_fries_potato, limit_of_molasses):
+        self.beef = 0
+        self.cucumber = 0
+        self.cream = 0
+        self.fries_potato = 0
+        self.molasses = 0
+        self.wrapped = False
+        self.packed = False
+
+    def _add_something(self, something: str, num: int) -> bool:
+        if (cur_num := getattr(self, something)) and (limit := getattr(self, f'limit_of_{something}')):
+            if cur_num + num <= limit:
+                setattr(self, something, cur_num + num)
+            else:
+                return False
+        raise ValueError(f"Unexpected adding thing: {something}")
+
+    def add_beef(self, num: int) -> bool:
+        return self._add_something('beef', num)
+
+    def add_cucumber(self, num: int) -> bool:
+        return self._add_something('cucumber', num)
+
+    def add_cream(self, num: int) -> bool:
+        return self._add_something('cream', num)
+
+    def add_fries_potato(self, num: int) -> bool:
+        return self._add_something('fries_potato', num)
+
+    def add_molasses(self, num: int) -> bool:
+        return self._add_something('molasses', num)
+
+    def pack_it(self) -> bool:
+        if self.packed:
+            return False
+        else:
+            self.packed = True
+            return True
+
+    def wrapped_it(self) -> bool:
+        if self.wrapped:
+            return False
+        else:
+            self.wrapped = True
+            return True
 
 
 class Clock(Data):
     secs_limit: int
 
 
-class Employee(InteractiveData):
+class Employee(Data):
     manually: bool
 
-    def register_supply_method(self, name, method):
-        self.__dict__[f'supply_{name}'] = method
-
-    def eat_shawarma(self):
+    def eat_shawarma(self, shawarma):
         ...
-
-    @property
-    def interact_by_click(self) -> bool:
-        return True
-
-    @property
-    def interact_by_drag(self) -> bool:
-        return False
-
-    def valid_target(self, target: Data) -> bool:
-        return False
 
 
 class GameStatus:
